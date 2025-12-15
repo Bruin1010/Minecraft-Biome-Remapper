@@ -7,7 +7,7 @@ It ships with a built-in default mapping designed to **remove Terralith biome ID
 ### Disclaimer (read first)
 - This tool is **EXPERIMENTAL**. Use at your own risk.
 - Always make a **full backup of your world** before running it.
-- If you’re removing any **world-generation** mod/datapack, you will also need to update `level.dat` (see the in-app disclaimer link).
+- If you’re removing any **world-generation** mod/datapack, you will also need to update `level.dat` here: https://sawdust.catter1.com/tools/level-editor
 
 ### Install
 
@@ -147,3 +147,4 @@ python terralith_biome_remap_standalone.py "C:\path\to\world" --export-default-m
 - **PyInstaller**: used to build the Windows `.exe`
 - **Tkinter**: GUI framework (part of the Python standard library)
 - **Sawdust Labs level editor**: referenced for updating `level.dat` when removing world-generation datapacks/mods
+
