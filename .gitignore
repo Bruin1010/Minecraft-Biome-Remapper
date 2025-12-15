@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+build/
+dist/
+*.spec
+
+# If you accidentally copy worlds into the repo, ignore them.
+world/
+
+
