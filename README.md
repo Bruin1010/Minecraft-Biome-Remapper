@@ -144,11 +144,12 @@ python terralith_biome_remap_standalone.py "C:\path\to\world" --export-default-m
 ### Credits
 
 - **Minecraft**: Mojang Studios / Microsoft (this is a third-party community tool)
-- **Terralith**: Terralith worldgen project (this tool provides a default Terralith→vanilla mapping)
+- **Terralith**: Terralith worldgen project 
 - **nbtlib**: used for reading/writing Java chunk NBT
 - **PyInstaller**: used to build the Windows `.exe`
 - **Tkinter**: GUI framework (part of the Python standard library)
 - **Sawdust Labs level editor**: referenced for updating `level.dat` when removing world-generation datapacks/mods
+
 
 
 
