@@ -1,5 +1,7 @@
 ## Minecraft Biome Remapper (Terralith → Vanilla) — V1.0
 
+https://github.com/Bruin1010/Minecraft-Biome-Remapper/blob/fc1a44f2b76ea17fff583ffa50254b9aefbe22bb/ICON.jpg
+
 This project is a standalone tool that **edits Java region files (`*.mca`) directly** and remaps biome IDs by rewriting **chunk section biome palette strings** (fast and correct for Minecraft Java 1.18+ / 1.21.x).
 
 It ships with a built-in default mapping designed to **remove Terralith biome IDs** (remap `terralith:*` → `minecraft:*`), and can also be used as a **generic biome remapper** via a custom mapping INI.
@@ -147,4 +149,5 @@ python terralith_biome_remap_standalone.py "C:\path\to\world" --export-default-m
 - **PyInstaller**: used to build the Windows `.exe`
 - **Tkinter**: GUI framework (part of the Python standard library)
 - **Sawdust Labs level editor**: referenced for updating `level.dat` when removing world-generation datapacks/mods
+
 
