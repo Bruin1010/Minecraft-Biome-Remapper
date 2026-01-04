@@ -1,6 +1,4 @@
-## Minecraft Biome Remapper (Terralith → Vanilla) — V1.0
-
-![ICON](https://github.com/user-attachments/assets/9970938f-8c7a-475f-83e2-79ae8df8cd4b)
+## Minecraft Biome Remapper (Terralith → Vanilla) — V1.1
 
 This project is a standalone tool that **edits Java region files (`*.mca`) directly** and remaps biome IDs by rewriting **chunk section biome palette strings** (fast and correct for Minecraft Java 1.18+ / 1.21.x).
 
@@ -9,7 +7,7 @@ It ships with a built-in default mapping designed to **remove Terralith biome ID
 ### Disclaimer (read first)
 - This tool is **EXPERIMENTAL**. Use at your own risk.
 - Always make a **full backup of your world** before running it.
-- If you’re removing any **world-generation** mod/datapack, you will also need to update `level.dat` here: https://sawdust.catter1.com/tools/level-editor
+- If you’re removing any **world-generation** mod/datapack, you will also need to update `level.dat` (see the in-app disclaimer link).
 
 ### Install
 
@@ -144,12 +142,15 @@ python terralith_biome_remap_standalone.py "C:\path\to\world" --export-default-m
 ### Credits
 
 - **Minecraft**: Mojang Studios / Microsoft (this is a third-party community tool)
-- **Terralith**: Terralith worldgen project 
+- **Terralith**: Terralith worldgen project (this tool provides a default Terralith→vanilla mapping)
 - **nbtlib**: used for reading/writing Java chunk NBT
 - **PyInstaller**: used to build the Windows `.exe`
 - **Tkinter**: GUI framework (part of the Python standard library)
 - **Sawdust Labs level editor**: referenced for updating `level.dat` when removing world-generation datapacks/mods
 
+#### About `pymctranslate`
+
+This project does **not** import or depend on `pymctranslate` in its source code. If you see it mentioned in your local build environment, it’s likely coming from other Python packages installed on your machine and is **not required** for this tool.
 
 
 

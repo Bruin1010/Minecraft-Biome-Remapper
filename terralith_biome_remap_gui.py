@@ -56,7 +56,7 @@ def add_tooltip(widget: tk.Widget, text: str) -> None:
 class App(tk.Tk):
     def __init__(self) -> None:
         super().__init__()
-        self.title("Minecraft Biome Remapper V1.0")
+        self.title("Minecraft Biome Remapper V1.1")
         self.geometry("1100x650")
         self.minsize(900, 520)
 
@@ -130,7 +130,7 @@ class App(tk.Tk):
         frame.rowconfigure(1, weight=1)
         frame.columnconfigure(0, weight=1)
 
-        title = ttk.Label(frame, text="Minecraft Biome Remapper V1.0 — Read This First", font=("Segoe UI", 12, "bold"))
+        title = ttk.Label(frame, text="Minecraft Biome Remapper V1.1 — Read This First", font=("Segoe UI", 12, "bold"))
         title.grid(row=0, column=0, sticky="w", pady=(0, 8))
 
         text = tk.Text(frame, wrap="word", height=10)

@@ -467,6 +467,8 @@ def _remap_chunk_biome_palettes(
                 continue
 
         for palette in _iter_biome_palette_lists(section):
+            if not palette or len(palette) == 0:
+                continue
             # Debug: sample a few palette entries from the world
             if debug_limit > 0 and len(debug_samples) < debug_limit:
                 for v in palette:
@@ -478,19 +480,33 @@ def _remap_chunk_biome_palettes(
                         continue
                     debug_samples.append(s)
 
-            for i in range(len(palette)):
+            palette_len = len(palette)
+            for i in range(palette_len):
                 try:
+                    # Double-check bounds in case palette was modified
+                    if i >= len(palette):
+                        break
                     raw = str(palette[i])
+                except (IndexError, AttributeError, TypeError):
+                    continue
                 except Exception:
                     continue
-                norm = _normalize_biome_name(raw)
-                new = mapping.get(norm)
-                if (not new) and unmapped_terralith_to and norm.startswith("terralith:"):
-                    new = unmapped_terralith_to
-                if new and new != norm:
-                    palette[i] = nbtlib.String(new)
-                    changed = True
-                    entries_changed += 1
+                try:
+                    norm = _normalize_biome_name(raw)
+                    new = mapping.get(norm)
+                    if (not new) and unmapped_terralith_to and norm.startswith("terralith:"):
+                        new = unmapped_terralith_to
+                    if new and new != norm:
+                        # Final bounds check before assignment
+                        if i < len(palette):
+                            palette[i] = nbtlib.String(new)
+                            changed = True
+                            entries_changed += 1
+                except (IndexError, AttributeError, TypeError):
+                    continue
+                except Exception:
+                    # Catch any other unexpected errors during remapping
+                    continue
 
     return (changed, entries_changed)
 
@@ -682,19 +698,20 @@ def _process_region_file(
                         print("[debug-structure]  sections: <missing/empty>")
                     else:
                         print(f"[debug-structure]  sections type={type(secs).__name__} len={len(secs)}")
-                        s0 = secs[0]
-                        s0_keys = list(s0.keys()) if isinstance(s0, dict) else []
-                        print(f"[debug-structure]  section[0] keys={s0_keys}")
-                        if isinstance(s0, dict):
-                            b = s0.get('biomes') or s0.get('Biomes')
-                            if b is None:
-                                print("[debug-structure]  section[0].biomes: <missing>")
-                            else:
-                                b_keys = list(b.keys()) if isinstance(b, dict) else []
-                                print(f"[debug-structure]  section[0].biomes type={type(b).__name__} keys={b_keys}")
-                                if isinstance(b, dict):
-                                    pal = b.get("palette") or b.get("Palette")
-                                    print(f"[debug-structure]  section[0].biomes.palette type={type(pal).__name__}")
+                        if len(secs) > 0:
+                            s0 = secs[0]
+                            s0_keys = list(s0.keys()) if isinstance(s0, dict) else []
+                            print(f"[debug-structure]  section[0] keys={s0_keys}")
+                            if isinstance(s0, dict):
+                                b = s0.get('biomes') or s0.get('Biomes')
+                                if b is None:
+                                    print("[debug-structure]  section[0].biomes: <missing>")
+                                else:
+                                    b_keys = list(b.keys()) if isinstance(b, dict) else []
+                                    print(f"[debug-structure]  section[0].biomes type={type(b).__name__} keys={b_keys}")
+                                    if isinstance(b, dict):
+                                        pal = b.get("palette") or b.get("Palette")
+                                        print(f"[debug-structure]  section[0].biomes.palette type={type(pal).__name__}")
                 except Exception:
                     pass
                 structure_printed += 1
@@ -712,9 +729,23 @@ def _process_region_file(
                 entries_changed += ec
         except Exception as e:
             parse_errors += 1
-            if debug_errors > 0 and parse_errors <= debug_errors:
+            # Always log IndexError and other critical errors, even if debug_errors is 0
+            is_critical = isinstance(e, (IndexError, KeyError, AttributeError))
+            if is_critical or (debug_errors > 0 and parse_errors <= debug_errors):
                 try:
-                    print(f"[debug-error] {path.name} idx={ptr.idx}: {type(e).__name__}: {e}")
+                    error_msg = f"[error] {path.name} chunk_idx={ptr.idx}: {type(e).__name__}: {e}"
+                    print(error_msg, flush=True)
+                except Exception:
+                    pass
+            # For critical errors, also include a traceback hint for debugging
+            if is_critical and parse_errors == 1:
+                try:
+                    import traceback
+                    tb_lines = traceback.format_exc().splitlines()
+                    if len(tb_lines) > 1:
+                        print(f"[error] Traceback (first occurrence):", flush=True)
+                        for line in tb_lines[-5:]:  # Last 5 lines of traceback
+                            print(f"[error]   {line}", flush=True)
                 except Exception:
                     pass
             continue
@@ -873,7 +904,12 @@ def run(argv: Optional[Sequence[str]] = None, *, log=print) -> int:
         ]
 
         for fut in as_completed(futures):
-            name, c_proc, c_chg, e_chg, samples = fut.result()
+            try:
+                name, c_proc, c_chg, e_chg, samples = fut.result()
+            except Exception as e:
+                log(f"ERROR: Failed to process region file: {type(e).__name__}: {e}")
+                regions_processed += 1
+                continue
             regions_processed += 1
             chunks_processed += c_proc
             chunks_changed += c_chg
