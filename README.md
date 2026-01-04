@@ -1,4 +1,4 @@
-## Minecraft Biome Remapper (Terralith → Vanilla) — V1.0
+## Minecraft Biome Remapper (Terralith → Vanilla) — V1.1
 
 ![ICON](https://github.com/user-attachments/assets/9970938f-8c7a-475f-83e2-79ae8df8cd4b)
 
@@ -10,6 +10,20 @@ It ships with a built-in default mapping designed to **remove Terralith biome ID
 - This tool is **EXPERIMENTAL**. Use at your own risk.
 - Always make a **full backup of your world** before running it.
 - If you’re removing any **world-generation** mod/datapack, you will also need to update `level.dat` here: https://sawdust.catter1.com/tools/level-editor
+
+Changelog
+v1.1
+Improved error handling and resilience: The program now continues processing even if individual chunks encounter errors (IndexError, malformed data, etc.). Previously, a single problematic chunk could cause the entire conversion to fail.
+Enhanced error logging: Critical errors (IndexError, KeyError, AttributeError) are now always logged with specific region file and chunk index information, making it easier to identify problematic chunks if needed.
+Better bounds checking: Added comprehensive bounds checking when accessing biome palette entries and chunk sections to prevent crashes from unexpected data structures.
+Graceful error recovery: If a chunk cannot be processed due to malformed data or unexpected structure, the program skips that chunk and continues with the rest of the world. This means you'll still get biome conversions for all the chunks that can be processed, even if a few fail.
+Important note about errors: If you see error messages during processing, don't worry! The program is designed to handle errors gracefully. It will continue converting biomes in all the chunks it can process. A few errors here and there are normal and won't prevent the conversion from completing successfully. The error messages are logged for diagnostic purposes, but they don't indicate a failure of the overall conversion process.
+v1.0
+Initial public release
+GUI + Windows EXE build
+Built-in default Terralith → vanilla mapping
+Optional custom mapping INI support
+
 
 ### Install
 
@@ -149,6 +163,7 @@ python terralith_biome_remap_standalone.py "C:\path\to\world" --export-default-m
 - **PyInstaller**: used to build the Windows `.exe`
 - **Tkinter**: GUI framework (part of the Python standard library)
 - **Sawdust Labs level editor**: referenced for updating `level.dat` when removing world-generation datapacks/mods
+
 
 
 
