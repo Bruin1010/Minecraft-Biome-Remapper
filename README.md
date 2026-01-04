@@ -27,7 +27,7 @@ It ships with a built-in default mapping designed to **remove Terralith biome ID
 - Optional custom mapping INI support
 
 
-### Install
+## Install
 
 From this folder:
 
@@ -165,6 +165,7 @@ python terralith_biome_remap_standalone.py "C:\path\to\world" --export-default-m
 - **PyInstaller**: used to build the Windows `.exe`
 - **Tkinter**: GUI framework (part of the Python standard library)
 - **Sawdust Labs level editor**: referenced for updating `level.dat` when removing world-generation datapacks/mods
+
 
 
 
